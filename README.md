@@ -50,7 +50,7 @@ structured and guided manner:
     unzipped into the `Working_data` folder.
 6.  **Analyze BMA data** by running the `R_Figure_1.R` and
     `R_Table_S2.R` scripts. Two new folders `Figures` and `Tables` will
-    emerge storing the corresponding figures and tables from the
+    emerge storing the corresponding figures and tables shown in the
     manuscript.
 7.  **Analyze LCMS data** by running the scripts `R_tidy_LCMS_data.R`,
     `"R_Figure_2.R` and `R_Tables_1_and_S3.R` sequentially. Additional
