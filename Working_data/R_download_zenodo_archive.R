@@ -31,6 +31,15 @@ zip_file_path <- list.files(here("Working_data"),
 for (path in zip_file_path) {
   utils::unzip(path,
                exdir = here("Working_data"))
-  }
+}
+
+# UNZIP FOLDERS ####
+zip_folder_path <- list.files(here("Working_data"),
+                              full.names = T,
+                              pattern = "plates.zip"); zip_folder_path
+for (folder in zip_folder_path) {
+  utils::unzip(folder,
+               exdir = here("Working_data"))
+}
 
 # =========================T=H=E==E=N=D====================================== #
