@@ -46,7 +46,7 @@ To reproduce the analyses and visualizations from the manuscript in a structured
 # :pushpin: Citation
 **Citing this repository:**
 
->Jürgens, J., & Eckert, S. (2024). R scripts from: Foliar 5-azacytidine treatment of Tanacetum vulgare chemotypes alters in vitro growth performance of the necrotrophic fungus Botrytis cinerea [Computer software]. https://github.com/silvia-eckert/J-rgens_Eckert_2024_FREAE
+>Jürgens, J., & Eckert, S. (2024). R code from: Foliar 5-azacytidine treatment of Tanacetum vulgare chemotypes alters in vitro growth performance of the necrotrophic fungus Botrytis cinerea [Computer software]. https://github.com/silvia-eckert/J-rgens_Eckert_2024_FREAE
 
 **Citing the corresponding manuscript:**
 
