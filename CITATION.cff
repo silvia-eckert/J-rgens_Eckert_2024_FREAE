@@ -1,12 +1,10 @@
 cff-version: 1.2.0
-message: "If you the R scripts from this repository, please cite it as below."
 authors:
 - family-names: "Jürgens"
   given-names: "Jonas"
 - family-names: "Eckert"
   given-names: "Silvia"
   orcid: "https://orcid.org/0000-0002-8896-1046"
-year: 2024
-publisher: Github
+date-released: 2024-05-24
 title: "R scripts from: Foliar 5-azacytidine treatment of Tanacetum vulgare chemotypes alters in vitro growth performance of the necrotrophic fungus Botrytis cinerea"
 url: "https://github.com/silvia-eckert/J-rgens_Eckert_2024_FREAE"
