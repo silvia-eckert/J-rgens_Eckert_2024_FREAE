@@ -37,7 +37,7 @@ To reproduce the analyses and visualizations from the manuscript in a structured
 
 1. **Download** [R v4.3.3](https://cran.uni-muenster.de/index.html) and [RStudio](https://posit.co/download/rstudio-desktop/).
 2. **Clone the repository** via [Git](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository), [VS code](https://learn.microsoft.com/en-gb/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=activity-bar) or [RStudio](https://argoshare.is.ed.ac.uk/healthyr_book/clone-an-existing-github-project-to-new-rstudio-project.html).
-3. **Keep the structure** as it is, don't rename the folders and R scripts already present.
+3. **Keep the structure** as it is, don't rename the folders or R scripts that are already present.
 4. **Open the `.Rproj` file** in RStudio to initiate the cloned repository as an RStudio project. This will enable all R scripts to automatically detect the root directory of the project.
 5. **Run the `R_download_zenodo_archive.R` script** with `CTRL+ALT+R` to download the stored data from the corresponding [zenodo](https://zenodo.org/) repository. You don't have to change the settings, since the data will be automatically downloaded and unzipped into the `Working_data` folder.
 6. **Analyze BMA data** by running the `R_Figure_1.R` and `R_Table_S2.R` scripts. Two new folders `Figures` and `Tables` will emerge storing the corresponding figures and tables from the manuscript.

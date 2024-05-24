@@ -38,8 +38,8 @@ structured and guided manner:
     code](https://learn.microsoft.com/en-gb/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=activity-bar)
     or
     [RStudio](https://argoshare.is.ed.ac.uk/healthyr_book/clone-an-existing-github-project-to-new-rstudio-project.html).
-3.  **Keep the structure** as it is, don’t rename the folders and R
-    scripts already present.
+3.  **Keep the structure** as it is, don’t rename the folders or R
+    scripts that are already present.
 4.  **Open the `.Rproj` file** in RStudio to initiate the cloned
     repository as an RStudio project. This will enable all R scripts to
     automatically detect the root directory of the project.
@@ -61,7 +61,7 @@ structured and guided manner:
 
 **Citing this repository:**
 
-> Jürgens, J., & Eckert, S. (2024). R scripts from: Foliar 5-azacytidine
+> Jürgens, J., & Eckert, S. (2024). R code from: Foliar 5-azacytidine
 > treatment of Tanacetum vulgare chemotypes alters in vitro growth
 > performance of the necrotrophic fungus Botrytis cinerea \[Computer
 > software\].
