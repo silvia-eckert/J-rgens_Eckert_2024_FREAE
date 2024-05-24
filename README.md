@@ -3,8 +3,9 @@
 
 # R code from: Jürgens and Eckert (2024)
 
-![](https://img.shields.io/badge/manuscript-submitted-blue.svg)
 ![](https://img.shields.io/badge/repo%20status-private-orange.svg)
+![](https://img.shields.io/badge/manuscript-submitted-blue.svg)
+![](https://img.shields.io/badge/Zenodo-10.5281/zenodo.11281235-blue.svg)
 
 # :open_file_folder: Repository Structure
 
@@ -80,6 +81,7 @@ structured and guided manner:
 > treatment of *Tanacetum vulgare* chemotypes alters in vitro growth
 > performance of the necrotrophic fungus *Botrytis cinerea*. *Zenodo*.
 > DOI:
+> [10.5281/zenodo.11281235](https://www.doi.org/10.5281/zenodo.11281235)
 
 # :scroll: License
 
