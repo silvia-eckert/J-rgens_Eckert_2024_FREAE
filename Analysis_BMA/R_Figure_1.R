@@ -39,7 +39,7 @@ ggpubr::ggarrange(Figure_1a, Figure_1b,
                   heights = c(0.85, 0.85, 1),
                   labels = paste0("(", LETTERS[1:6], ")"),
                   common.legend = TRUE,
-                  legend = "top")
+                  legend = "top") + bgcolor("Grey") 
 
 # Save
 if(!dir.exists(here("Figures"))){

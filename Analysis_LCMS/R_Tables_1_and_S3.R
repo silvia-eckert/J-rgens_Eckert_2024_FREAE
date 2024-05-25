@@ -137,7 +137,7 @@ fractions <- c("F10", "F18", "F30", "F100")
 # Initialize an empty list to store feature lists for each chemotype and fraction
 id_lists <- list()
 
-# Loop through each chemotype and fraction to create RT lists
+# Loop through each chemotype and fraction to create feature lists
 for (chemotype in chemotypes) {
   chemotype_list <- list()
   for (fraction in fractions) {
@@ -157,7 +157,7 @@ for (chemotype in chemotypes) {
 # Initialize an empty list to store common-feature data frames
 id_common_list <- list()
 
-# Loop through each chemotype and fraction to calculate common RTs
+# Loop through each chemotype and fraction to calculate common features
 for (chemotype in chemotypes) {
   chemotype_list <- id_lists[[chemotype]]
   for (fraction in fractions) {
@@ -291,5 +291,24 @@ write.table(table_1,
             quote = FALSE,
             row.names = FALSE,
             sep = "\t")
+
+# =========================================================================== #
+
+# COMPARE CHEMOTYPES ####
+# Prepare data
+# Prepare data
+chemotypes_pivoted <- features %>%
+  tidyr::pivot_longer(cols = c("Mock_treated", "Low_dose", "High_dose"),
+                      names_to = "Treatment",
+                      values_to = "Intensity") %>% 
+  tidyr::pivot_wider(names_from = Chemotype,
+                     values_from = Intensity) %>% 
+  mutate(Aketo = replace_na(Aketo, 0),
+         BThu = replace_na(BThu, 0)) %>% 
+  dplyr::select(c(Aketo, BThu)) %>% 
+  as.matrix(); chemotypes_pivoted
+
+# Calculate Morisita-Horn similarity index
+chemotypes_mh <- 1-vegdist(t(chemotypes_pivoted), method = "horn"); chemotypes_mh # 0.7903716
 
 # =========================T=H=E==E=N=D====================================== #

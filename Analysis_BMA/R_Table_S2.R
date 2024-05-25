@@ -61,7 +61,7 @@ for (stats in names(stats_list)) {
     mutate(Fraction = factor(Fraction, levels = c("F10", "F18", "F30", "F100"))) %>% 
     dplyr::relocate(Chemotype, Treatment, Fraction, Conc, Mean, SE, n, S, df, p, Notation) %>% 
     dplyr::arrange(Chemotype, Treatment, Fraction)
-  
+ 
   table_S2 <- rbind(table_S2, stats_subset)
 }; table_S2
 
