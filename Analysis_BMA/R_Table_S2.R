@@ -44,7 +44,7 @@ for (stats in names(stats_list)) {
   
   # Extract stats element and subset columns
   stats_subset <- stats_list[[stats]] %>% 
-    dplyr::select(c(Group, Experiment, Treatment, Concentration, n, statistic, df, p, p.signif)) %>% 
+    dplyr::select(c(Group, Experiment, Treatment, Concentration, mean, stderr, n, statistic, df, p, p.signif)) %>% 
     mutate(p.signif = if_else(n < 6, "", p.signif),
            p = if_else(n < 6, NA, p),
            statistic = if_else(n < 6, NA, statistic),
@@ -52,11 +52,16 @@ for (stats in names(stats_list)) {
            p = round(p, 3)) %>% 
     dplyr::rename(Chemotype = Group,
                   Fraction = Treatment,
-                  "5AZA treatment" = Experiment,
+                  Mean = mean,
+                  SE = stderr,
+                  Conc = Concentration,
+                  Treatment = Experiment,
                   Notation = p.signif,
                   S = statistic) %>% 
-    dplyr::relocate(Chemotype, "5AZA treatment", Fraction, Concentration, n, S, df, p, Notation)
- 
+    mutate(Fraction = factor(Fraction, levels = c("F10", "F18", "F30", "F100"))) %>% 
+    dplyr::relocate(Chemotype, Treatment, Fraction, Conc, Mean, SE, n, S, df, p, Notation) %>% 
+    dplyr::arrange(Chemotype, Treatment, Fraction)
+  
   table_S2 <- rbind(table_S2, stats_subset)
 }; table_S2
 
