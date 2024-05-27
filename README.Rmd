@@ -47,7 +47,7 @@ To reproduce the analyses and visualizations from the manuscript in a structured
 # :pushpin: Citation
 **Citing this repository:**
 
->Jürgens, J., & Eckert, S. (2024). R code from: Foliar 5-azacytidine treatment of Tanacetum vulgare chemotypes alters in vitro growth performance of the necrotrophic fungus Botrytis cinerea [Computer software]. https://github.com/silvia-eckert/J-rgens_Eckert_2024_FREAE
+>Jürgens, J., & Eckert, S. (2024). R code from: Foliar 5-azacytidine treatment of Tanacetum vulgare chemotypes alters in vitro growth performance of the necrotrophic fungus Botrytis cinerea (v1.0.0) [Computer software]. https://github.com/silvia-eckert/J-rgens_Eckert_2024_FREAE
 
 **Citing the corresponding manuscript:**
 
@@ -55,7 +55,7 @@ To reproduce the analyses and visualizations from the manuscript in a structured
 
 **Citing the dataset deposited on Zenodo:**
 
->Jürgens, J., & Eckert, S. (2024). Data from: Foliar 5-azacytidine treatment of _Tanacetum vulgare_ chemotypes alters in vitro growth performance of the necrotrophic fungus _Botrytis cinerea_. _Zenodo_. DOI: [10.5281/zenodo.11281235](https://www.doi.org/10.5281/zenodo.11281235)
+>Jürgens, J., & Eckert, S. (2024). Data from: Foliar 5-azacytidine treatment of _Tanacetum vulgare_ chemotypes alters in vitro growth performance of the necrotrophic fungus _Botrytis cinerea_ (v1.0.0) [Data set]. _Zenodo_. DOI: [10.5281/zenodo.11281235](https://www.doi.org/10.5281/zenodo.11281235)
 
 # :scroll: License
 This repository and the files therein are licensed under the [GPL-3.0 license](https://www.gnu.org/licenses/gpl-3.0.html.en).
