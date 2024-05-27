@@ -69,12 +69,7 @@ table_S3 <- features_long_unfiltered %>%
     id_count_unique = n_distinct(bucket_id)) %>%
   ungroup() %>% 
   tidyr::pivot_wider(names_from = "Treatment",
-                     values_from = "id_count_unique") %>% 
-  mutate(Total = Mock_treated  + Low_dose + High_dose); table_S3 # Table 1: 8 x 6
-
-# SUM TOTAL
-sum(table_S3$Total[table_S3$Chemotype == "Aketo"]) # 23088
-sum(table_S3$Total[table_S3$Chemotype == "BThu"]) # 22762
+                     values_from = "id_count_unique"); table_S3 # Table 1: 8 x 6
 
 # Save table 1
 if(!dir.exists(here("Tables"))){
@@ -281,6 +276,7 @@ table_1 <- left_join(table_counts_mh,
   mutate(Fraction = factor(Fraction, levels = c("F10", "F18", "F30", "F100"))) %>% 
   mutate(Combination = sub('_vs_', ' vs ', Combination, perl = TRUE)) %>% 
   dplyr::arrange(Chemotype, rev(Combination), Fraction); table_1 # Table 1
+
 # Save
 if(!dir.exists(here("Tables"))){
   dir.create(here("Tables"))
@@ -295,8 +291,7 @@ write.table(table_1,
 # =========================================================================== #
 
 # COMPARE CHEMOTYPES ####
-# Prepare data
-# Prepare data
+# Prepare data for overall comparison
 chemotypes_pivoted <- features %>%
   tidyr::pivot_longer(cols = c("Mock_treated", "Low_dose", "High_dose"),
                       names_to = "Treatment",
@@ -307,8 +302,37 @@ chemotypes_pivoted <- features %>%
          BThu = replace_na(BThu, 0)) %>% 
   dplyr::select(c(Aketo, BThu)) %>% 
   as.matrix(); chemotypes_pivoted
+# Prepare data for treatment-specific comparison of chemotypes
+chemotypes_treatment_pivoted <- features %>%
+  tidyr::pivot_longer(cols = c("Mock_treated", "Low_dose", "High_dose"),
+                      names_to = "Treatment",
+                      values_to = "Intensity") %>% 
+  tidyr::pivot_wider(names_from = Chemotype,
+                     values_from = Intensity) %>% 
+  mutate(Aketo = replace_na(Aketo, 0),
+         BThu = replace_na(BThu, 0)) %>% 
+  dplyr::select(c(Treatment, Aketo, BThu)) %>% 
+  split(.$Treatment) %>% 
+  purrr::map(~.x %>% select(-Treatment)) %>% 
+  purrr::map(~.x %>% as.matrix()); chemotypes_treatment_pivoted
 
 # Calculate Morisita-Horn similarity index
+# Overall
 chemotypes_mh <- 1-vegdist(t(chemotypes_pivoted), method = "horn"); chemotypes_mh # 0.7903716
+# Per treatment group
+chemotypes_treatment_mh <- data.frame()
+for (treatment in names(chemotypes_treatment_pivoted)) {
+  subset <- chemotypes_treatment_pivoted[[treatment]]
+  mh <- 1-vegdist(t(subset), method = "horn")
+  result <- data.frame(Comparison = "Aketo_vs_BThu",
+                       Treatment = treatment,
+                       Similarity = mh)
+  chemotypes_treatment_mh <- rbind(chemotypes_treatment_mh, result)
+}
+chemotypes_treatment_mh
+#   Comparison    Treatment     Similarity
+# 1 Aketo_vs_BThu High_dose     0.8401470
+# 2 Aketo_vs_BThu Low_dose      0.7465612
+# 3 Aketo_vs_BThu Mock_treated  0.8921892
 
 # =========================T=H=E==E=N=D====================================== #

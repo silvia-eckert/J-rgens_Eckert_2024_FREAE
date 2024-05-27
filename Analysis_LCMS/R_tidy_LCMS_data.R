@@ -25,14 +25,14 @@ meta <- read.table(here::here("Working_data",
                    header = TRUE,
                    sep = "\t",
                    stringsAsFactors = TRUE); head(meta); str(meta)
-meta$Sample_ID <- as.character(meta$Sample_ID)
+meta$Sample_ID <- as.character(meta$Sample_ID) # 25 x 20
 
 # bucket table
 features <- read.table(here::here("Working_data",
                                 "LCMS_data_raw.txt"),
                      header = TRUE,
                      sep = "\t",
-                     stringsAsFactors = TRUE); head(features); str(features)
+                     stringsAsFactors = TRUE); head(features); str(features) # 13066 x 28
 
 # =========================================================================== #
 
@@ -76,6 +76,8 @@ features_tidy$RT <- as.numeric(features_tidy$RT)
 features_tidy$m_z <- as.numeric(features_tidy$m_z)
 features_tidy$Bucket_label <- as.character(features_tidy$Bucket_label)
 names(features_tidy) # after
+# Check total number of features after data cleaning and before transposing
+dim(features_tidy) # 12629 x 28
 
 # Step 6: Transpose data
 features_tidy <- features_tidy %>% 
@@ -94,6 +96,8 @@ features_clean$bucket_id <- as.factor(features_clean$Bucket_label)
 class(features_clean$bucket_id) # should be factor
 levels(features_clean$bucket_id) <- c(1:length(levels(features_clean$bucket_id)))
 features_clean$bucket_id # should be numeric factor
+# Check table dimension
+dim(features_clean) # 303096 (12629 clean features * 24 samples) x 25
 
 # Write results to file
 write.table(features_clean,

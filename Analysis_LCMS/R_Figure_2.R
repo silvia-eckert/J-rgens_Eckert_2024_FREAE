@@ -39,7 +39,7 @@ features <- read.table(here::here("Working_data",
 # RESTRUCTURE DATA ####
 # Change to long-format structure
 features_long <- features %>% 
-  filter(Mock_treated > 0.5, Low_dose > 0.5, High_dose > 0.5) %>%
+  filter(Mock_treated > 0.5, Low_dose > 0.5, High_dose > 0.5) %>% # 185 × 9 unique features
   mutate(Fraction = factor(Fraction, levels = c("F10","F18","F30", "F100"))) %>%
   dplyr::select(c(Chemotype, Fraction, RT, bucket_id, Mock_treated, Low_dose, High_dose)) %>% 
   pivot_longer(cols = c(Mock_treated, Low_dose, High_dose),
@@ -48,19 +48,7 @@ features_long <- features %>%
   mutate(Intensity_scaled = scale(Intensity)[,1],
          bucket_id = factor(bucket_id),
          Treatment = factor(Treatment, levels = c("Mock_treated", "Low_dose", "High_dose")),
-         Chemotype = as.factor(Chemotype)); features_long # 555 x 7
-# NO FILTERING APPLIED!
-features_long_unfiltered <- features %>%
-  mutate(Fraction = factor(Fraction, levels = c("F10","F18","F30", "F100"))) %>%
-  dplyr::select(c(Chemotype, Fraction, RT, bucket_id, Mock_treated, Low_dose, High_dose)) %>% 
-  pivot_longer(cols = c(Mock_treated, Low_dose, High_dose),
-               names_to = "Treatment",
-               values_to = "Value") %>% 
-  mutate(RT = factor(RT),
-         bucket_id = factor(bucket_id),
-         Treatment = factor(Treatment, levels = c("Mock_treated", "Low_dose", "High_dose")),
-         Chemotype = as.factor(Chemotype)) %>% 
-  dplyr::filter(Value > 0); features_long_unfiltered # 45,850 x 6
+         Chemotype = as.factor(Chemotype)); features_long # 555 (185 features * 3 treatment groups) x 7
 
 # =========================================================================== #
 
@@ -72,28 +60,28 @@ Aketo_F10_id_unique <- as.character(features_long$bucket_id[features_long$Chemot
 BThu_F10_id_unique <- as.character(features_long$bucket_id[features_long$Chemotype == "BThu" &
                                                          features_long$Fraction == "F10"])
 F10_id_intersect <- as.numeric(intersect(Aketo_F10_id_unique,
-                                         BThu_F10_id_unique)); F10_id_intersect; length(F10_id_intersect)
+                                         BThu_F10_id_unique)); F10_id_intersect; length(F10_id_intersect) # 12
 # Fraction F18
 Aketo_F18_id_unique <- as.character(features_long$bucket_id[features_long$Chemotype == "Aketo" &
                                                           features_long$Fraction == "F18"])
 BThu_F18_id_unique <- as.character(features_long$bucket_id[features_long$Chemotype == "BThu" &
                                                          features_long$Fraction == "F18"])
 F18_id_intersect <- as.numeric(intersect(Aketo_F18_id_unique,
-                                         BThu_F18_id_unique)); F18_id_intersect; length(F18_id_intersect)
+                                         BThu_F18_id_unique)); F18_id_intersect; length(F18_id_intersect) # 24
 # Fraction F30
 Aketo_F30_id_unique <- as.character(features_long$bucket_id[features_long$Chemotype == "Aketo" &
                                                           features_long$Fraction == "F30"])
 BThu_F30_id_unique <- as.character(features_long$bucket_id[features_long$Chemotype == "BThu" &
                                                          features_long$Fraction == "F30"])
 F30_id_intersect <- as.numeric(intersect(Aketo_F30_id_unique,
-                                         BThu_F30_id_unique)); F30_id_intersect; length(F30_id_intersect)
+                                         BThu_F30_id_unique)); F30_id_intersect; length(F30_id_intersect) # 8
 # Fraction F100
 Aketo_F100_id_unique <- as.character(features_long$bucket_id[features_long$Chemotype == "Aketo" &
                                                            features_long$Fraction == "F100"])
 BThu_F100_id_unique <- as.character(features_long$bucket_id[features_long$Chemotype == "BThu" &
                                                           features_long$Fraction == "F100"])
 F100_id_intersect <- as.numeric(intersect(Aketo_F100_id_unique,
-                                          BThu_F100_id_unique)); F100_id_intersect; length(F100_id_intersect)
+                                          BThu_F100_id_unique)); F100_id_intersect; length(F100_id_intersect) # 15
 
 # Subset to intersection for each fraction
 features_F10_subset <- features_long[features_long$bucket_id %in% F10_id_intersect &
@@ -114,8 +102,6 @@ identical(features_subset$bucket_id[features_subset$Chemotype == "Aketo"],
 # =========================================================================== #
 
 # PLOT DATA ####
-# Total number of features
-length(unique(features_long_unfiltered$bucket_id)) # 12621
 # Total number of features in heatmap
 length(unique(features_subset$bucket_id)) # 54
 
