@@ -233,66 +233,34 @@ write.table(table_1,
 
 # STATS: FEATURES ####
 ## Aketo ####
-# C vs LD
-Aketo_CvsLD <- table_S3 %>% 
+Aketo_counts <- table_S3 %>% 
   dplyr::filter(Chemotype == "Aketo") %>%
   ungroup() %>% 
-  dplyr::select(Fraction, Mock_treated, Low_dose) %>%
-  tidyr::pivot_longer(cols = c(Mock_treated, Low_dose),
+  dplyr::select(!Chemotype) %>%
+  tidyr::pivot_longer(cols = c(Mock_treated, Low_dose, High_dose),
                       names_to = "Treatment",
                       values_to = "Value") %>% 
   tidyr::pivot_wider(names_from = Fraction,
                      values_from = Value) %>% 
   tibble::column_to_rownames("Treatment") %>% 
-  as.matrix(); Aketo_CvsLD
+  as.matrix(); Aketo_counts
 # test
-Aketo_CvsLD_stats <- chisq.test(Aketo_CvsLD); Aketo_CvsLD_stats # X-squared = 19.577, df = 3, p-value = 0.0002077
-
-# C vs HD
-Aketo_CvsHD <- table_S3 %>% 
-  dplyr::filter(Chemotype == "Aketo") %>%
-  ungroup() %>% 
-  dplyr::select(Fraction, Mock_treated, High_dose) %>%
-  tidyr::pivot_longer(cols = c(Mock_treated, High_dose),
-                      names_to = "Treatment",
-                      values_to = "Value") %>% 
-  tidyr::pivot_wider(names_from = Fraction,
-                     values_from = Value) %>% 
-  tibble::column_to_rownames("Treatment") %>% 
-  as.matrix(); Aketo_CvsHD
-# test
-Aketo_CvsHD_stats <- chisq.test(Aketo_CvsHD); Aketo_CvsHD_stats # X-squared = 764.87, df = 3, p-value < 2.2e-16
+Aketo_counts_stats <- chisq.test(Aketo_counts); Aketo_counts_stats # X-squared = 1305.3, df = 6, p-value < 2.2e-16
 
 ## BThu ####
-# C vs LD
-BThu_CvsLD <- table_S3 %>% 
+BThu_counts <- table_S3 %>% 
   dplyr::filter(Chemotype == "BThu") %>%
   ungroup() %>% 
-  dplyr::select(Fraction, Mock_treated, Low_dose) %>%
-  tidyr::pivot_longer(cols = c(Mock_treated, Low_dose),
+  dplyr::select(!Chemotype) %>%
+  tidyr::pivot_longer(cols = c(Mock_treated, Low_dose, High_dose),
                       names_to = "Treatment",
                       values_to = "Value") %>% 
   tidyr::pivot_wider(names_from = Fraction,
                      values_from = Value) %>% 
   tibble::column_to_rownames("Treatment") %>% 
-  as.matrix(); BThu_CvsLD
+  as.matrix(); BThu_counts
 # test
-BThu_CvsLD_stats <- chisq.test(BThu_CvsLD); BThu_CvsLD_stats # X-squared = 413.59, df = 3, p-value < 2.2e-16
-
-# C vs HD
-BThu_CvsHD <- table_S3 %>% 
-  dplyr::filter(Chemotype == "BThu") %>%
-  ungroup() %>% 
-  dplyr::select(Fraction, Mock_treated, High_dose) %>%
-  tidyr::pivot_longer(cols = c(Mock_treated, High_dose),
-                      names_to = "Treatment",
-                      values_to = "Value") %>% 
-  tidyr::pivot_wider(names_from = Fraction,
-                     values_from = Value) %>% 
-  tibble::column_to_rownames("Treatment") %>% 
-  as.matrix(); BThu_CvsHD
-# test
-BThu_CvsHD_stats <- chisq.test(BThu_CvsHD); BThu_CvsHD_stats # X-squared = 125.09, df = 3, p-value < 2.2e-16
+BThu_counts_stats <- chisq.test(BThu_counts); BThu_counts_stats # X-squared = 436.29, df = 6, p-value < 2.2e-16
 
 # =========================================================================== #
 
@@ -307,7 +275,7 @@ Aketo_perc <- table_1 %>%
   tibble::column_to_rownames("Combination") %>% 
   as.matrix(); Aketo_perc
 # test
-Aketo_stats <- chisq.test(Aketo_perc); Aketo_stats # X-squared = 24.422, df = 3, p-value = 2.039e-05
+Aketo_perc_stats <- chisq.test(Aketo_perc); Aketo_perc_stats # X-squared = 24.422, df = 3, p-value = 2.039e-05
 
 ## BThu ####
 BThu_perc <- table_1 %>% 
@@ -319,38 +287,28 @@ BThu_perc <- table_1 %>%
   tibble::column_to_rownames("Combination") %>% 
   as.matrix(); BThu_perc
 # test
-BThu_stats <- chisq.test(BThu_perc); BThu_stats # X-squared = 4.6535, df = 3, p-value = 0.199
+BThu_perc_stats <- chisq.test(BThu_perc); BThu_perc_stats # X-squared = 4.6535, df = 3, p-value = 0.199
 
 # TABLE S4 ####
-table_S4 <- data.frame(Test = c(Aketo_CvsLD_stats$data.name,
-                                Aketo_CvsHD_stats$data.name,
-                                BThu_CvsLD_stats$data.name,
-                                BThu_CvsHD_stats$data.name,
-                                Aketo_stats$data.name,
-                                BThu_stats$data.name),
-                       Chi_squared = c(Aketo_CvsLD_stats$statistic,
-                                       Aketo_CvsHD_stats$statistic,
-                                       BThu_CvsLD_stats$statistic,
-                                       BThu_CvsHD_stats$statistic,
-                                       Aketo_stats$statistic,
-                                       BThu_stats$statistic),
-                       Df = c(Aketo_CvsLD_stats$parameter,
-                                       Aketo_CvsHD_stats$parameter,
-                                       BThu_CvsLD_stats$parameter,
-                                       BThu_CvsHD_stats$parameter,
-                                       Aketo_stats$parameter,
-                                       BThu_stats$parameter),
-                       p = c(Aketo_CvsLD_stats$p.value,
-                              Aketo_CvsHD_stats$p.value,
-                              BThu_CvsLD_stats$p.value,
-                              BThu_CvsHD_stats$p.value,
-                              Aketo_stats$p.value,
-                              BThu_stats$p.value)) %>% 
+table_S4 <- data.frame(Test = c(Aketo_counts_stats$data.name,
+                                Aketo_perc_stats$data.name,
+                                BThu_counts_stats$data.name,
+                                BThu_perc_stats$data.name),
+                       Chi_squared = c(Aketo_counts_stats$statistic,
+                                       Aketo_perc_stats$statistic,
+                                       BThu_counts_stats$statistic,
+                                       BThu_perc_stats$statistic),
+                       Df = c(Aketo_counts_stats$parameter,
+                              Aketo_perc_stats$parameter,
+                              BThu_counts_stats$parameter,
+                              BThu_perc_stats$parameter),
+                       p = c(Aketo_counts_stats$p.value,
+                             Aketo_perc_stats$p.value,
+                             BThu_counts_stats$p.value,
+                             BThu_perc_stats$p.value)) %>% 
   tidyr::separate(Test, c("Chemotype", "Comparison")) %>% 
   mutate(Comparison = replace(Comparison,
-                              Comparison == "CvsLD", "Mock-treated vs Low-dose"),
-         Comparison = replace(Comparison,
-                              Comparison == "CvsHD", "Mock-treated vs High-dose"),
+                              Comparison == "counts", "Feature counts"),
          Comparison = replace(Comparison,
                               Comparison == "perc", "Feature intensity")); table_S4
 
