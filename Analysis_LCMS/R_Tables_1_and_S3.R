@@ -22,9 +22,9 @@ library(reshape2)
 
 # LOAD DATA ####
 features <- read.table(here::here("Working_data",
-                              "LCMS_data_clean.txt"),
-                   header = TRUE,
-                   sep = "\t") %>%
+                                  "LCMS_data_clean.txt"),
+                       header = TRUE,
+                       sep = "\t") %>%
   dplyr::select(c("Chemotype", "Treatment_ID", "Fraction_Methanol_ID", "Bucket_label",
                   "RT", "bucket_id", "m_z", "peak_intensity")) %>% 
   tidyr::pivot_wider(names_from = "Treatment_ID",
@@ -54,15 +54,15 @@ features_long_unfiltered <- features %>%
 features_diff_CvsLD <- features %>% 
   dplyr::select(Chemotype, Fraction, bucket_id, Mock_treated, Low_dose) %>% 
   dplyr::filter((Mock_treated + Low_dose) > 0) %>% 
-  mutate(diff = Mock_treated - Low_dose); features_diff_CvsLD # 20,293 x 6
+  mutate(diff = Low_dose - Mock_treated); features_diff_CvsLD # 20,293 x 6
 features_diff_CvsHD <- features %>% 
   dplyr::select(Chemotype, Fraction, bucket_id, Mock_treated, High_dose) %>% 
   dplyr::filter((Mock_treated + High_dose) > 0) %>% 
-  mutate(diff = Mock_treated - High_dose); features_diff_CvsHD # 21,034 x 6
+  mutate(diff = High_dose - Mock_treated); features_diff_CvsHD # 21,034 x 6
 
 # =========================================================================== #
 
-# COUNT BUCKETS ####
+# TABLE S3 ####
 table_S3 <- features_long_unfiltered %>%
   group_by(Chemotype, Fraction, Treatment) %>%
   summarise(
@@ -84,7 +84,7 @@ write.table(table_S3,
 
 # =========================================================================== #
 
-# COMPARE TREATMENTS ####
+# TABLE 1 ####
 # Step 1: Count higher/lower feature intensities per factor level combination
 # C = mock treatment
 # LD = low-dose treatment
@@ -94,101 +94,42 @@ features_diff_counts_CvsLD <- features_diff_CvsLD %>%
   group_by(Chemotype, Fraction) %>%
   summarise(
     C_vs_LD.Higher = sum(diff > 0, na.rm = TRUE),
-    C_vs_LD.Lower = sum(diff < 0, na.rm = TRUE)) %>% 
+    C_vs_LD.Lower = sum(diff < 0, na.rm = TRUE),
+    C_vs_LD.Sum = n()) %>% 
   tidyr::pivot_longer(cols = starts_with("C_"),
                       names_to = "Combination",
                       values_to = "Value") %>% 
   tidyr::separate(Combination,
-                  into = c("Combination", "Buckets"),
-                           sep = "\\.") %>% 
-  tidyr::pivot_wider(names_from = Buckets,
-                     values_from = Value); features_diff_counts_CvsLD
+                  into = c("Combination", "Features"),
+                  sep = "\\.") %>% 
+  tidyr::pivot_wider(names_from = Features,
+                     values_from = Value) %>% 
+  mutate(Higher_percent = Higher/Sum*100,
+         Lower_percent = Lower/Sum*100); features_diff_counts_CvsLD
 
 # C vs HD
 features_diff_counts_CvsHD <- features_diff_CvsHD %>%
   group_by(Chemotype, Fraction) %>%
   summarise(
     C_vs_HD.Higher = sum(diff > 0, na.rm = TRUE),
-    C_vs_HD.Lower = sum(diff < 0, na.rm = TRUE)) %>% 
+    C_vs_HD.Lower = sum(diff < 0, na.rm = TRUE),
+    C_vs_HD.Sum = n()) %>% 
   tidyr::pivot_longer(cols = starts_with("C_"),
                       names_to = "Combination",
                       values_to = "Value") %>% 
   tidyr::separate(Combination,
-                  into = c("Combination", "Buckets"),
+                  into = c("Combination", "Features"),
                   sep = "\\.") %>% 
-  tidyr::pivot_wider(names_from = Buckets,
-                     values_from = Value); features_diff_counts_CvsHD
+  tidyr::pivot_wider(names_from = Features,
+                     values_from = Value) %>% 
+  mutate(Higher_percent = Higher/Sum*100,
+         Lower_percent = Lower/Sum*100); features_diff_counts_CvsHD
 
 # Combine count tables
 features_diff_counts <- rbind(features_diff_counts_CvsLD,
-                          features_diff_counts_CvsHD); features_diff_counts
+                              features_diff_counts_CvsHD); features_diff_counts
 
-# Step 2: Count common features 
-# Define the chemotypes, treatments, and fractions
-chemotypes <- c("Aketo", "BThu")
-treatments <- c("Mock_treated", "Low_dose", "High_dose")
-fractions <- c("F10", "F18", "F30", "F100")
-
-# Initialize an empty list to store feature lists for each chemotype and fraction
-id_lists <- list()
-
-# Loop through each chemotype and fraction to create feature lists
-for (chemotype in chemotypes) {
-  chemotype_list <- list()
-  for (fraction in fractions) {
-    fraction_list <- list()
-    for (treatment in treatments) {
-      fraction_list[[treatment]] <- unique(features_long_unfiltered$bucket_id[
-        features_long_unfiltered$Treatment == treatment & 
-          features_long_unfiltered$Chemotype == chemotype &
-          features_long_unfiltered$Fraction == fraction
-      ])
-    }
-    chemotype_list[[fraction]] <- fraction_list
-  }
-  id_lists[[chemotype]] <- chemotype_list
-}
-
-# Initialize an empty list to store common-feature data frames
-id_common_list <- list()
-
-# Loop through each chemotype and fraction to calculate common features
-for (chemotype in chemotypes) {
-  chemotype_list <- id_lists[[chemotype]]
-  for (fraction in fractions) {
-    id_list <- chemotype_list[[fraction]]
-    combinations <- combn(names(id_list), 2, simplify = FALSE)
-    
-    id_common <- data.frame(
-      Chemotype = character(length(combinations)),
-      Fraction = character(length(combinations)),
-      Combination = character(length(combinations)),
-      Common = integer(length(combinations)),
-      stringsAsFactors = FALSE
-    )
-    
-    for (i in seq_along(combinations)) {
-      combo <- combinations[[i]]
-      id_common$Chemotype[i] <- chemotype
-      id_common$Fraction[i] <- fraction
-      id_common$Combination[i] <- paste(combo, collapse = "_vs_")
-      id_common$Common[i] <- length(intersect(id_list[[combo[1]]], id_list[[combo[2]]]))
-    }
-    
-    id_common_list[[paste(chemotype, fraction, sep = "_")]] <- id_common
-  }
-}
-
-# Combine results into single data frame
-combined_id_common <- do.call(rbind, id_common_list) %>% 
-  tibble::rownames_to_column(var = "Interaction") %>% 
-  tidyr::separate(Interaction,
-                  into = c("Chemotype", "Fraction"),
-                  sep = "_") %>% 
-  mutate(Fraction = sub('\\..*', '', Fraction, perl = TRUE)) %>% 
-  dplyr::filter(Combination != "LD_vs_HD"); combined_id_common
-
-# Step 3: Calculate Morisita-Horn index
+# Step 2: Calculate Morisita-Horn index
 # Prepare data
 features_split <- features %>%
   dplyr::select(!c(Bucket_label, RT, bucket_id, m_z)) %>% 
@@ -261,18 +202,18 @@ for (fraction in names(features_BThu)) {
 
 # Combine similarity tables
 features_mh <- rbind(features_Aketo_mh,
-                 features_BThu_mh); features_mh
+                     features_BThu_mh); features_mh
 
-# Step 4: Combine all tables and save
-table_counts_mh <- left_join(features_diff_counts,
-                      features_mh); table_counts_mh
-table_1 <- left_join(table_counts_mh,
-                      combined_id_common %>% 
-                        mutate(Combination =
-                                 forcats::fct_recode(as.factor(Combination),
-                                            C_vs_LD = "Mock_treated_vs_Low_dose",
-                                            C_vs_HD = "Mock_treated_vs_High_dose"))) %>% 
-  dplyr::relocate(Chemotype, Combination, Fraction, Lower, Higher, Common, Similarity) %>%
+# Step 3: Combine all tables and save
+table_1 <- left_join(features_diff_counts %>% 
+                       dplyr::select(Chemotype, Fraction, Combination, Higher_percent, Lower_percent, Sum) %>% 
+                       dplyr::rename(Features = Sum),
+                     features_mh) %>% 
+  mutate(Combination = replace(Combination,
+                               Combination == "C_vs_LD", "Mock_treated_vs_Low_dose"),
+         Combination = replace(Combination,
+                               Combination == "C_vs_HD", "Mock_treated_vs_High_dose")) %>% 
+  dplyr::relocate(Chemotype, Combination, Fraction, Lower_percent, Higher_percent, Features, Similarity) %>%
   mutate(Fraction = factor(Fraction, levels = c("F10", "F18", "F30", "F100"))) %>% 
   mutate(Combination = sub('_vs_', ' vs ', Combination, perl = TRUE)) %>% 
   dplyr::arrange(Chemotype, rev(Combination), Fraction); table_1 # Table 1
