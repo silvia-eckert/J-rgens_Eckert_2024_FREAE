@@ -3,7 +3,7 @@
 
 # R code from: Jürgens and Eckert (2024)
 
-![](https://img.shields.io/badge/repo%20status-archived-lightgray.svg)
+![](https://img.shields.io/badge/repo%20status-active-orange.svg)
 ![](https://img.shields.io/badge/manuscript-submitted-orange.svg)
 ![](https://img.shields.io/badge/Zenodo-10.5281/zenodo.11281235-blue.svg)
 
