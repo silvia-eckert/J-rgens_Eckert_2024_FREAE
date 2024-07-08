@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 * **Analysis_LCMS/:** Contains all R scripts to analyse the liquid chromatography-mass spectrometry (LCMS) dataset
 
 # :package: Dependencies
-To be able to smoothly reproduce the figures and tables, make sure you have [R v4.3.3](https://cran.uni-muenster.de/index.html) and the necessary packages installed:
+To be able to smoothly reproduce the figures and tables, make sure you have [R v4.3.3](https://cran.uni-muenster.de/index.html) and the following R packages installed:
 ```{r packages, eval = FALSE}
 install.packages(c("here", "microdiluteR", "dplyr", "tidyr", "ggplot2", "ggpubr", "cowplot", "vegan", "reshape2"))
 ```

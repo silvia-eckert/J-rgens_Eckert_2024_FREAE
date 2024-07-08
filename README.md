@@ -20,7 +20,7 @@
 
 To be able to smoothly reproduce the figures and tables, make sure you
 have [R v4.3.3](https://cran.uni-muenster.de/index.html) and the
-necessary packages installed:
+following R packages installed:
 
 ``` r
 install.packages(c("here", "microdiluteR", "dplyr", "tidyr", "ggplot2", "ggpubr", "cowplot", "vegan", "reshape2"))
