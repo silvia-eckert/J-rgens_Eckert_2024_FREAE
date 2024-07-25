@@ -71,15 +71,15 @@ structured and guided manner:
 > Jürgens, J., & Eckert, S. (2024). Foliar 5-azacytidine treatment of
 > *Tanacetum vulgare* chemotypes alters in vitro growth performance of
 > the necrotrophic fungus *Botrytis cinerea*. Frontiers in Epigenetics
-> and Epigenomics (Submitted).
+> and Epigenomics (submitted).
 
 **Citing the dataset deposited on Zenodo:**
 
 > Jürgens, J., & Eckert, S. (2024). Data from: Foliar 5-azacytidine
 > treatment of *Tanacetum vulgare* chemotypes alters in vitro growth
 > performance of the necrotrophic fungus *Botrytis cinerea* (v1.0.0)
-> \[Data set\]. *Zenodo*. DOI:
-> [10.5281/zenodo.11281235](https://www.doi.org/10.5281/zenodo.11281235)
+> \[Data set\]. *Zenodo*.
+> [https://doi.org/10.5281/zenodo.11281235](https://www.doi.org/10.5281/zenodo.11281235)
 
 # :scroll: License
 
