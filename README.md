@@ -3,7 +3,7 @@
 
 # R code from: Jürgens and Eckert (2024)
 
-![](https://img.shields.io/badge/repo%20status-active-blue.svg)
+![](https://img.shields.io/badge/repo%20status-archived-orange.svg)
 
 # :open_file_folder: Repository Structure
 
