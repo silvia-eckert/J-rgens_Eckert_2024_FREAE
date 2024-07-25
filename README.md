@@ -4,6 +4,7 @@
 # R code from: Jürgens and Eckert (2024)
 
 ![](https://img.shields.io/badge/repo%20status-archived-orange.svg)
+[![DOI](https://zenodo.org/badge/805307619.svg)](https://zenodo.org/doi/10.5281/zenodo.12825708)
 
 # :open_file_folder: Repository Structure
 
