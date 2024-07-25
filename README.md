@@ -3,9 +3,9 @@
 
 # R code from: Jürgens and Eckert (2024)
 
-![](https://img.shields.io/badge/repo%20status-active-orange.svg)
+![](https://img.shields.io/badge/repo%20status-active-blue.svg)
 ![](https://img.shields.io/badge/manuscript-submitted-orange.svg)
-![](https://img.shields.io/badge/Zenodo-10.5281/zenodo.11281235-blue.svg)
+![<https://doi.org/10.1002/ece3.5325>](https://img.shields.io/badge/Zenodo-10.5281/zenodo.11281235-blue.svg)
 
 # :open_file_folder: Repository Structure
 
